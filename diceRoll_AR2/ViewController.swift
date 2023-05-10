@@ -20,13 +20,37 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         
         // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
+//        sceneView.showsStatistics = true
         
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+//        let scene = SCNScene(named: "art.scnassets/diceCollada.scn")!
+        
+        // Set the scene to the view
+//        sceneView.scene = scene
+        
+        sceneView.autoenablesDefaultLighting = true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        let scene = SCNScene(named: "art.scnassets/diceCollada.scn")!
         
         // Set the scene to the view
         sceneView.scene = scene
+       
+        if let diceNode = scene.rootNode.childNode(withName: "Dice", recursively: true) {
+            roll(dice: diceNode)
+            
+        }
+    }
+    
+    func roll(dice: SCNNode){
+        
+      let randomX = Float((arc4random_uniform(4) + 1)) * (Float.pi/2)
+      //        let randomY = Double((arc4random_uniform(10) + 11)) * (Double.pi/2)
+      let randomZ = Float((arc4random_uniform(4) + 1)) * (Float.pi/2)
+      
+      dice.runAction(SCNAction.rotateBy(x: CGFloat(randomX * 5), y: 0, z: CGFloat(randomZ * 5), duration: 0.5))
     }
     
     override func viewWillAppear(_ animated: Bool) {
